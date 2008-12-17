@@ -9,7 +9,7 @@ import example.client.core.model.ModelTestCase;
  */
 public class ColorUpdateLogicTest extends ModelTestCase<ColorModel> {
 
-  private static final String COLOR = "00FF00";
+  private static final String GREEN = "00FF00";
   private ColorUpdateLogic logic;
 
   protected ColorModel createModel() {
@@ -17,7 +17,7 @@ public class ColorUpdateLogicTest extends ModelTestCase<ColorModel> {
   }
 
   protected void onModelSetUp() throws Exception {
-    model.getColor().setText(COLOR);
+    model.getColor().setText(GREEN);
     logic = new ColorUpdateLogicImpl(model);
   }
 
@@ -26,7 +26,7 @@ public class ColorUpdateLogicTest extends ModelTestCase<ColorModel> {
     assertEquals("Unexpected initial state", "", initModel.getColor().getText());
 
     logic.initColor(initModel);
-    assertEquals("Model was not initialized", COLOR, initModel.getColor().getText());
+    assertEquals("Model was not initialized", GREEN, initModel.getColor().getText());
   }
 
   public void testSave() {
