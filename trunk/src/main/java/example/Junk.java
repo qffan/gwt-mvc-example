@@ -2,7 +2,7 @@ package example;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/usr/local/google/projects/gwt-mvc-example/src/main/java/example/Junk.properties'.
+ * 	'/scm/oss/gwt-mvc-example/src/main/java/example/Junk.properties'.
  */
 public interface Junk extends com.google.gwt.i18n.client.Constants {
   
