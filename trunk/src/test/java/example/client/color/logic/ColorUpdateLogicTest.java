@@ -10,6 +10,7 @@ import example.client.core.model.ModelTestCase;
 public class ColorUpdateLogicTest extends ModelTestCase<ColorModel> {
 
   private static final String GREEN = "00FF00";
+  private static final String WHITE = "FFFFFF";
   private ColorUpdateLogic logic;
 
   protected ColorModel createModel() {
@@ -31,11 +32,10 @@ public class ColorUpdateLogicTest extends ModelTestCase<ColorModel> {
 
   public void testSave() {
     ColorModel updatedModel = createModel();
-    String updatedColor = "FFFFFF";
-    updatedModel.getColor().setText(updatedColor);
+    updatedModel.getColor().setText(WHITE);
 
     logic.saveColor(updatedModel);
 
-    assertEquals("Master model was not updated", updatedColor, model.getColor().getText());
+    assertEquals("Master model was not updated", WHITE, model.getColor().getText());
   }
 }
