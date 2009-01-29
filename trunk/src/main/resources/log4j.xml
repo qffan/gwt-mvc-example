@@ -3,24 +3,24 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p %d{dd-MMM-yyyy HH:mm:ss} [%t] %c  - %m%n" />
+            <param name="ConversionPattern" value="%-5p %d{dd-MMM-yyyy HH:mm:ss} [%t] %c  - %m%n"/>
         </layout>
     </appender>
     <appender name="FILE_TXT" class="org.apache.log4j.FileAppender">
-        <param name="File" value="simplesample_log.txt" />
-        <param name="append" value="false" />
+        <param name="File" value="stonedrobin-log.txt"/>
+        <param name="append" value="false"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p %d{dd-MMM-yyyy HH:mm:ss} [%t] %c  - %m%n" />
+            <param name="ConversionPattern" value="%-5p %d{dd-MMM-yyyy HH:mm:ss} [%t] %c  - %m%n"/>
         </layout>
     </appender>
-    
+
     <logger name="org.apache">
-        <level value="warn" />
+        <level value="warn"/>
     </logger>
-    
-    <root>        
-        <priority value="debug" />        
-        <appender-ref ref="CONSOLE" /> 
-        <appender-ref ref="FILE_TXT" />        
+
+    <root>
+        <priority value="debug"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_TXT"/>
     </root>
 </log4j:configuration>
