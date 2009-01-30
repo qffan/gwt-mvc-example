@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 by Google, Inc.
+ * Copyright 2008-2009 by Stoned Robin
  */
 package com.stonedrobin.server;
 
@@ -84,6 +84,23 @@ public class ApacheSimpleHttpClientTest extends TestCase {
         verify(apacheHttpClient);
     }
 
+  public void testPostMethod_HeadersAdded() throws IOException {
+      HttpClient apacheHttpClient = createMock(HttpClient.class);
+      SimpleHttpClient client = new ApacheSimpleHttpClient(apacheHttpClient);
+
+      Header header = new Header("header", "value");
+      Header header2 = new Header("another header", "another value");
+    
+    GetMethod method = HttpMethodMatcher.postWithHeaders(header, header2);
+    expect(apacheHttpClient.executeMethod(method)).andReturn(0);
+
+      replay(apacheHttpClient);
+
+      client.doPost(null, header, header2);
+
+      verify(apacheHttpClient);
+  }
+    
     public void testPostMethod_RequestURISet() throws IOException {
         HttpClient apacheHttpClient = createMock(HttpClient.class);
         SimpleHttpClient client = new ApacheSimpleHttpClient(apacheHttpClient);
