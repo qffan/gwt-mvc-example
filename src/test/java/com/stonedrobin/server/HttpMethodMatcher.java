@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 by Google, Inc.
+ * Copyright 2008-2009 by Stoned Robin
  */
 package com.stonedrobin.server;
 
@@ -30,83 +30,99 @@ public class HttpMethodMatcher implements IArgumentMatcher {
     private final Object expectedURI;
     private final List<Header> expectedHeaders;
 
-    /**
-     * Matches a GET method with the specific URI.
-     *
-     * @param uri expected URI
-     * @return null
-     */
-    public static GetMethod getWithURI(String uri) {
-        EasyMock.reportMatcher(new HttpMethodMatcher(GetMethod.class, uri, Collections.<Header>emptyList()));
-        return null;
+  /**
+   * Matches a GET method with the specific URI.
+   *
+   * @param uri expected URI
+   * @return null
+   */
+  public static GetMethod getWithURI(String uri) {
+    EasyMock.reportMatcher(
+        new HttpMethodMatcher(GetMethod.class, uri, Collections.<Header>emptyList()));
+    return null;
+  }
+
+  /**
+   * Matches a POST method with the specific URI.
+   *
+   * @param uri expected URI
+   * @return null
+   */
+  public static PostMethod postWithURI(String uri) {
+    EasyMock.reportMatcher(
+        new HttpMethodMatcher(PostMethod.class, uri, Collections.<Header>emptyList()));
+    return null;
+  }
+
+  /**
+   * Matches a method with any URI but given request headers.
+   *
+   * @param headers request header
+   * @return null
+   */
+  public static GetMethod getWithHeaders(Header... headers) {
+    EasyMock
+        .reportMatcher(new HttpMethodMatcher(GetMethod.class, DO_NOT_CARE, Arrays.asList(headers)));
+    return null;
+  }
+
+  /**
+   * Matches a method with any URI but given request headers.
+   *
+   * @param headers request header
+   * @return null
+   */
+  public static GetMethod postWithHeaders(Header... headers) {
+    EasyMock.reportMatcher(
+        new HttpMethodMatcher(PostMethod.class, DO_NOT_CARE, Arrays.asList(headers)));
+    return null;
+  }
+
+  private HttpMethodMatcher(Class<? extends HttpMethod> expectedType, Object expectedURI,
+      List<Header> expectedHeaders) {
+    this.expectedType = expectedType;
+    this.expectedURI = expectedURI;
+    this.expectedHeaders = new ArrayList<Header>(expectedHeaders);
+  }
+
+  public boolean matches(Object object) {
+    if (!(object instanceof HttpMethod)) {
+      return false;
     }
 
-    /**
-     * Matches a POST method with the specific URI.
-     *
-     * @param uri expected URI
-     * @return null
-     */
-    public static PostMethod postWithURI(String uri) {
-        EasyMock.reportMatcher(new HttpMethodMatcher(PostMethod.class, uri, Collections.<Header>emptyList()));
-        return null;
+    HttpMethod actual = (HttpMethod) object;
+
+    if (expectedType != actual.getClass()) {
+      return false;
     }
 
-    /**
-     * Matches a method with any URI but given request headers.
-     *
-     * @param headers request header
-     * @return null
-     */
-    public static GetMethod getWithHeaders(Header... headers) {
-        EasyMock.reportMatcher(new HttpMethodMatcher(GetMethod.class, DO_NOT_CARE, Arrays.asList(headers)));
-        return null;
-    }
-
-    private HttpMethodMatcher(Class<? extends HttpMethod> expectedType, Object expectedURI, List<Header> expectedHeaders) {
-        this.expectedType = expectedType;
-        this.expectedURI = expectedURI;
-        this.expectedHeaders = new ArrayList<Header>(expectedHeaders);
-    }
-
-    public boolean matches(Object object) {
-        if (!(object instanceof HttpMethod)) {
-            return false;
+    if (expectedURI != DO_NOT_CARE) {
+      try {
+        if (!expectedURI.equals(actual.getURI().toString())) {
+          return false;
         }
-
-        HttpMethod actual = (HttpMethod) object;
-
-        if (expectedType != actual.getClass()) {
-            return false;
-        }
-
-        if (expectedURI != DO_NOT_CARE) {
-            try {
-                if (!expectedURI.equals(actual.getURI().toString())) {
-                    return false;
-                }
-            } catch (URIException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        List<Header> actualHeaders = Arrays.asList(actual.getRequestHeaders());
-        return expectedHeaders.equals(actualHeaders);
+      } catch (URIException e) {
+        throw new RuntimeException(e);
+      }
     }
 
-    public void appendTo(StringBuffer stringBuffer) {
-        stringBuffer.append("Expected ");
-        stringBuffer.append(expectedType.getName());
-        stringBuffer.append(" method");
+    List<Header> actualHeaders = Arrays.asList(actual.getRequestHeaders());
+    return expectedHeaders.equals(actualHeaders);
+  }
 
-        if (expectedURI != DO_NOT_CARE) {
-            stringBuffer.append(" with URI: ");
-            stringBuffer.append(expectedURI);
-        }
+  public void appendTo(StringBuffer stringBuffer) {
+    stringBuffer.append("Expected ");
+    stringBuffer.append(expectedType.getName());
+    stringBuffer.append(" method");
 
-        if (!expectedHeaders.isEmpty()) {
-            stringBuffer.append(" with headers: ");
-            stringBuffer.append(expectedHeaders);
-        }
+    if (expectedURI != DO_NOT_CARE) {
+      stringBuffer.append(" with URI: ");
+      stringBuffer.append(expectedURI);
     }
+
+    if (!expectedHeaders.isEmpty()) {
+      stringBuffer.append(" with headers: ");
+      stringBuffer.append(expectedHeaders);
+    }
+  }
 }

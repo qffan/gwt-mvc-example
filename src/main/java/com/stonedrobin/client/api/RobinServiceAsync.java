@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 by Google, Inc.
+ * Copyright 2008-2009 by Stoned Robin
  */
 package com.stonedrobin.client.api;
 

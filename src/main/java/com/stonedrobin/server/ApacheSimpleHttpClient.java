@@ -1,5 +1,5 @@
 /**
- * Copyright 2009 by Google, Inc.
+ * Copyright 2008-2009 by Stoned Robin
  */
 package com.stonedrobin.server;
 
@@ -70,6 +70,10 @@ public class ApacheSimpleHttpClient implements SimpleHttpClient {
     public Response doPost(String url, Header... headers) throws IOException {
         final HttpMethod method = createPostMethod(url);
 
+      for (Header header : headers) {
+          method.addRequestHeader(header);
+      }
+      
         final int status = client.executeMethod(method);
         final String body = method.getResponseBodyAsString();
 
